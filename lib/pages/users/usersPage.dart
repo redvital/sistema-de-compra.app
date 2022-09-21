@@ -30,7 +30,7 @@ class UsersPage extends StatelessWidget {
                 icon: Icon(Icons.add_sharp),
                 label: Text('Agregar'),
                 onPressed: () {
-                  print('presed');
+                  Navigator.pushNamed(context, 'RegisterUsers');
                 },
               ),
 
@@ -97,7 +97,9 @@ class CardUser extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.edit),
                   color: Colors.white,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'EditUsers');
+                  },
                 ),
               ),
             ],

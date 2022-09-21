@@ -1,15 +1,7 @@
-import 'package:app_dynamics/pages/art/artPage.dart';
-import 'package:app_dynamics/pages/companies/companyPage.dart';
-import 'package:app_dynamics/pages/home/homePage.dart';
-import 'package:app_dynamics/pages/login/loginPage.dart';
-import 'package:app_dynamics/pages/mytasks/myTaskPage.dart';
-import 'package:app_dynamics/pages/negotiations/negotiationsPage.dart';
 import 'package:app_dynamics/pages/production/productionPage.dart';
-import 'package:app_dynamics/pages/reception/receptionPage.dart';
 import 'package:app_dynamics/pages/tasks/taskPage.dart';
+import 'package:app_dynamics/routes.dart';
 import 'package:flutter/material.dart';
-
-import 'pages/users/usersPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,6 +23,10 @@ class MyApp extends StatelessWidget {
         productionPage.routerName: (_) => productionPage(),
         receptionPage.routerName: (_) => receptionPage(),
         TaskPage.routerName: (_) => TaskPage(),
+
+        //sub-pages
+        UserScreen.routerName: (_) => UserScreen(),
+        UserEditScreen.routerName: (_) => UserEditScreen(),
       },
     );
   }

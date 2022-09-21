@@ -3,7 +3,7 @@ import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class productionPage extends StatelessWidget {
-  static const String routerName = 'Producción y Transito';
+  static const String routerName = 'produccionTransito';
 
   @override
   Widget build(BuildContext context) {
