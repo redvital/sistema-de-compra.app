@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      initialRoute: 'usuarios',
+      initialRoute: 'Empresas',
       routes: {
         LoginPage.routerName: (_) => LoginPage(),
         UsersPage.routerName: (_) => UsersPage(),
@@ -26,6 +26,8 @@ class MyApp extends StatelessWidget {
 
         //sub-pages
         UserScreen.routerName: (_) => UserScreen(),
+        CompanyScreen.routerName: (_) => CompanyScreen(),
+        CompanyEditScreen.routerName: (_) => CompanyEditScreen(),
         UserEditScreen.routerName: (_) => UserEditScreen(),
       },
     );

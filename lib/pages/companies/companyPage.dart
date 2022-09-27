@@ -25,7 +25,7 @@ class companyPage extends StatelessWidget {
             icon: Icon(Icons.add_sharp),
             label: Text('Agregar'),
             onPressed: () {
-              print('presed');
+              Navigator.pushNamed(context, 'RegisterCompany');
             },
           ),
 
@@ -126,7 +126,7 @@ class WordOfTheDayWidget extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
                       onPressed: () {
-                        print('hola');
+                        Navigator.pushNamed(context, 'EditCompany');
                       },
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green,

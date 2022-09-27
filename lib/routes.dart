@@ -1,5 +1,9 @@
+import 'package:app_dynamics/pages/companies/companyPage.dart';
+
 export 'package:app_dynamics/pages/art/artPage.dart';
 export 'package:app_dynamics/pages/companies/companyPage.dart';
+export 'package:app_dynamics/pages/companies/companyScreen.dart';
+export 'package:app_dynamics/pages/companies/companyEditScreen.dart';
 export 'package:app_dynamics/pages/home/homePage.dart';
 export 'package:app_dynamics/pages/login/loginPage.dart';
 export 'package:app_dynamics/pages/mytasks/myTaskPage.dart';
