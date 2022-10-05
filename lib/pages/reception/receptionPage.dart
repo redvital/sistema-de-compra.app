@@ -3,8 +3,6 @@ import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class receptionPage extends StatelessWidget {
-  static const String routerName = 'Recepción Reclamos y Devoluciones';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 
 class CompanyScreen extends StatelessWidget {
-  static const String routerName = 'RegisterCompany';
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

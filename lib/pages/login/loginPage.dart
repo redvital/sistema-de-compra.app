@@ -1,9 +1,14 @@
+import 'package:app_dynamics/helpers/alert.dart';
+import 'package:app_dynamics/services/authServies.dart';
 import 'package:app_dynamics/ui/appTheme.dart';
+import 'package:app_dynamics/widgets/btnRed.dart';
+import 'package:app_dynamics/widgets/customInput.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
-  static const String routerName = 'login';
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,73 +31,72 @@ class LoginPage extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            _userTextField(),
-            SizedBox(
-              height: 30,
-            ),
-            _passwordTextField(),
-            SizedBox(
-              height: 30,
-            ),
-            _bottonLogin(),
+            _Form(),
           ],
         ),
       ),
     ));
   }
+}
 
-  Widget _bottonLogin() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return MaterialButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        disabledColor: Colors.grey,
-        elevation: 0,
-        color: Color.fromARGB(211, 196, 19, 19),
-        onPressed: () {},
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-          child: Text('Ingrese', style: TextStyle(color: Colors.white)),
-        ),
-      );
-    });
-  }
+class _Form extends StatefulWidget {
+  const _Form({Key? key}) : super(key: key);
 
-  _userTextField() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextField(
-          //quita autocorreccion
-          autocorrect: false,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecortions.authInputDecoration(
-              prefixIcon: Icons.email,
-              hintText: 'correo@correo.com',
-              labelText: 'Correo electronico'),
-          onChanged: (value) {},
-        ),
-      );
-    });
-  }
+  @override
+  State<_Form> createState() => _FormState();
+}
 
-  _passwordTextField() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextField(
-          //quita autocorreccion
-          autocorrect: false,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecortions.authInputDecoration(
-              hintText: 'contraseña',
-              labelText: 'Contraseña',
-              prefixIcon: Icons.lock),
-          onChanged: (value) {},
-        ),
-      );
-    });
+class _FormState extends State<_Form> {
+  final emailCtrl = TextEditingController();
+  final passCtrl = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
+    return Container(
+      margin: EdgeInsets.only(top: 40),
+      padding: EdgeInsets.symmetric(horizontal: 50),
+      child: Column(
+        children: <Widget>[
+          CustomInput(
+            icon: Icons.mail,
+            placeholder: 'Correo',
+            keyboardType: TextInputType.emailAddress,
+            textController: emailCtrl,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          CustomInput(
+            icon: Icons.lock_clock,
+            placeholder: 'Contraseña',
+            isPassword: true,
+            textController: passCtrl,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          ButtonRed(
+            text: 'Ingresar',
+            onPressed: authService.autenticando
+                ? () => null
+                : () async {
+                    FocusScope.of(context).unfocus();
+                    final loginOk = await authService.login(
+                        emailCtrl.text.trim(), passCtrl.text.trim());
+                    if (loginOk) {
+                      //navegar a ota pantalla
+                      Navigator.pushReplacementNamed(context, 'home');
+                    } else {
+                      //mostrar alerta
+                      mostrarAlerta(context, 'Login Incorrecto',
+                          'Haz ingreso algun dato erroneo');
+                    }
+                  },
+          )
+        ],
+      ),
+    );
   }
 }

@@ -5,8 +5,6 @@ import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class ArtPage extends StatelessWidget {
-  static const String routerName = 'arte';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

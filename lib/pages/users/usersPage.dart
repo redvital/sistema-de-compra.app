@@ -5,8 +5,6 @@ import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class UsersPage extends StatelessWidget {
-  static const String routerName = 'usuarios';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +28,7 @@ class UsersPage extends StatelessWidget {
                 icon: Icon(Icons.add_sharp),
                 label: Text('Agregar'),
                 onPressed: () {
-                  Navigator.pushNamed(context, 'RegisterUsers');
+                  Navigator.pushNamed(context, 'userScreen');
                 },
               ),
 

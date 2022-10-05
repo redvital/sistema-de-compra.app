@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 
 class CompanyEditScreen extends StatelessWidget {
-  static const String routerName = 'EditCompany';
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

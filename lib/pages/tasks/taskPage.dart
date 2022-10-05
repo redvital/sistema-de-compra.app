@@ -3,8 +3,6 @@ import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class TaskPage extends StatelessWidget {
-  static const String routerName = 'Asignación de Tareas';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

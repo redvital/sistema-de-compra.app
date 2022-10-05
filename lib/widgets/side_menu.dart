@@ -1,16 +1,5 @@
-import 'package:app_dynamics/pages/art/artPage.dart';
-import 'package:app_dynamics/pages/home/homePage.dart';
-
-import 'package:app_dynamics/pages/companies/companyPage.dart';
-import 'package:app_dynamics/pages/negotiations/negotiationsPage.dart';
-import 'package:app_dynamics/pages/tasks/taskPage.dart';
-import 'package:app_dynamics/pages/reception/receptionPage.dart';
-import 'package:app_dynamics/pages/production/productionPage.dart';
-import 'package:app_dynamics/pages/mytasks/mytaskPage.dart';
-import 'package:app_dynamics/pages/users/usersPage.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:app_dynamics/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({Key? key}) : super(key: key);
@@ -27,65 +16,63 @@ class SideMenu extends StatelessWidget {
             leading: const Icon(Icons.home_sharp),
             title: const Text('Inicio'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, HomePage.routerName);
+              Navigator.pushReplacementNamed(context, 'home');
             },
           ),
           ListTile(
             leading: const Icon(Icons.people),
             title: const Text('Usuarios'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, UsersPage.routerName);
+              Navigator.pushReplacementNamed(context, 'user');
             },
           ),
           ListTile(
             leading: const Icon(Icons.business_sharp),
             title: const Text('Empresas'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, companyPage.routerName);
+              Navigator.pushReplacementNamed(context, 'company');
             },
           ),
           ListTile(
             leading: const Icon(Icons.task_alt_rounded),
             title: const Text('Asignación de Tareas'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, TaskPage.routerName);
+              Navigator.pushReplacementNamed(context, 'task');
             },
           ),
           ListTile(
             leading: const Icon(Icons.playlist_add_check),
             title: const Text('Mis Tareas'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, myTaskPage.routerName);
+              Navigator.pushReplacementNamed(context, 'mytask');
             },
           ),
           ListTile(
             leading: const Icon(Icons.handshake_outlined),
             title: const Text('Negociaciones'),
             onTap: () {
-              Navigator.pushReplacementNamed(
-                  context, NegotiationsPage.routerName);
+              Navigator.pushReplacementNamed(context, 'negotiations');
             },
           ),
           ListTile(
             leading: const Icon(Icons.app_registration_sharp),
             title: const Text('Artes'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, ArtPage.routerName);
+              Navigator.pushReplacementNamed(context, 'art');
             },
           ),
           ListTile(
             leading: const Icon(Icons.precision_manufacturing_rounded),
             title: const Text('Producción y Transito'),
             onTap: () {
-              Navigator.pushReplacementNamed(
-                  context, productionPage.routerName);
+              Navigator.pushReplacementNamed(context, 'production');
             },
           ),
           ListTile(
             leading: const Icon(Icons.production_quantity_limits),
             title: const Text('Recepción Reclamos y Devoluciones'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, receptionPage.routerName);
+              Navigator.pushReplacementNamed(context, 'reception');
             },
           ),
 

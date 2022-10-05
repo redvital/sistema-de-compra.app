@@ -1,17 +1,24 @@
+import 'package:app_dynamics/widgets/appbar.dart';
 import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  static const String routerName = 'Inicio';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('home page'),
-      ),
+      appBar: appBarReusable(),
       drawer: SideMenu(),
-      body: Center(
-        child: Text('HomePage'),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Text(
+            'Mi Inicio',
+            style: TextStyle(height: 2, fontSize: 20),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+        ]),
       ),
     );
   }

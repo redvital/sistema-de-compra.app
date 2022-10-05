@@ -3,8 +3,6 @@ import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 
 class NegotiationsPage extends StatelessWidget {
-  static const String routerName = 'Negociaciones';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
