@@ -96,7 +96,7 @@ class CardUser extends StatelessWidget {
                   icon: const Icon(Icons.edit),
                   color: Colors.white,
                   onPressed: () {
-                    Navigator.pushNamed(context, 'EditUsers');
+                    Navigator.pushNamed(context, 'userEditScreen');
                   },
                 ),
               ),

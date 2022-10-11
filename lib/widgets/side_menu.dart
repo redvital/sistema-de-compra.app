@@ -1,4 +1,5 @@
 import 'package:app_dynamics/routes/routes.dart';
+import 'package:app_dynamics/services/authServies.dart';
 import 'package:flutter/material.dart';
 
 class SideMenu extends StatelessWidget {
@@ -75,8 +76,7 @@ class SideMenu extends StatelessWidget {
               Navigator.pushReplacementNamed(context, 'reception');
             },
           ),
-
-           ListTile(
+          ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Cerrar Sesión'),
             onTap: () {},

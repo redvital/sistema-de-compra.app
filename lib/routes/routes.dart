@@ -3,6 +3,7 @@ import 'package:app_dynamics/pages/companies/companyEditScreen.dart';
 import 'package:app_dynamics/pages/companies/companyPage.dart';
 import 'package:app_dynamics/pages/companies/companyScreen.dart';
 import 'package:app_dynamics/pages/home/homePage.dart';
+import 'package:app_dynamics/pages/login/loadingPage.dart';
 
 import 'package:app_dynamics/pages/login/loginPage.dart';
 import 'package:app_dynamics/pages/mytasks/myTaskPage.dart';
@@ -27,7 +28,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   'task': (_) => TaskPage(),
   'company': (_) => companyPage(),
   //sub-pages
-
+  'loadingPage': (_) => LoadingPage(),
   'userScreen': (_) => UserScreen(),
   'companyScreen': (_) => CompanyScreen(),
   'CompanyEditScreen': (_) => CompanyEditScreen(),

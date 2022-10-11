@@ -1,4 +1,5 @@
 import 'package:app_dynamics/ui/appTheme.dart';
+import 'package:app_dynamics/widgets/customInputPage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
@@ -35,7 +36,17 @@ class UserEditScreen extends StatelessWidget {
   }
 }
 
-class _ProductForm extends StatelessWidget {
+class _ProductForm extends StatefulWidget {
+  @override
+  State<_ProductForm> createState() => _ProductFormState();
+}
+
+class _ProductFormState extends State<_ProductForm> {
+  final emailCtrl = TextEditingController();
+  final passCtrl = TextEditingController();
+  final rolCtrl = TextEditingController();
+  final nameCtrl = TextEditingController();
+  final repeatPassCtrl = new TextEditingController();
   final List<String> _items = [
     'Coordinador',
     'Vendedor',
@@ -43,6 +54,7 @@ class _ProductForm extends StatelessWidget {
     'Observador',
     'Artes',
   ];
+
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
@@ -55,14 +67,10 @@ class _ProductForm extends StatelessWidget {
             "Usuario incidencia",
             style: TextStyle(fontSize: 30, letterSpacing: 2),
           ),
-          TextFormField(
-            //quita autocorreccion
-            autocorrect: false,
-            keyboardType: TextInputType.text,
-            decoration: InputDecortions.authInputDecoration(
-                hintText: 'Nombre', labelText: 'Nombre'),
-            onChanged: (value) {},
-          ),
+          CustomInputPage(
+              placeholder: 'Nombre',
+              textTitle: 'Nombre',
+              textController: nameCtrl),
           //menu desplegable
           Text('Rol'),
 
@@ -80,42 +88,18 @@ class _ProductForm extends StatelessWidget {
             isExpanded: true,
             value: _items.first,
           ),
-          TextFormField(
-            //quita autocorreccion
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecortions.authInputDecoration(
-                hintText: 'Email', labelText: 'Email'),
-            onChanged: (value) {},
-          ),
-          TextFormField(
-            //quita autocorreccion
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecortions.authInputDecoration(
-                hintText: 'Email', labelText: 'Email'),
-            onChanged: (value) {},
-          ),
-          TextFormField(
-            //quita autocorreccion
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecortions.authInputDecoration(
-              hintText: 'contraseña',
-              labelText: 'Contraseña',
-            ),
-            onChanged: (value) {},
-          ),
-          TextFormField(
-            //quita autocorreccion
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecortions.authInputDecoration(
-              hintText: 'contraseña',
-              labelText: 'Contraseña',
-            ),
-            onChanged: (value) {},
-          ),
+          CustomInputPage(
+              placeholder: 'Email',
+              textTitle: 'Email',
+              textController: emailCtrl),
+          CustomInputPage(
+              placeholder: 'Contraseña',
+              textTitle: 'Contraseña',
+              textController: passCtrl),
+          CustomInputPage(
+              placeholder: 'Confirmar contraseña',
+              textTitle: 'Confirmar Contraseña',
+              textController: repeatPassCtrl),
           Center(child: _bottonSent())
         ],
       )),

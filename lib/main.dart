@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Materialapp',
-        initialRoute: 'login',
+        initialRoute: 'loadingPage',
+        //initialRoute: 'login',
         routes: appRoutes,
       ),
     );

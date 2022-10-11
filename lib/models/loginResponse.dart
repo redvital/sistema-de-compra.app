@@ -17,7 +17,7 @@ class LoginResponse {
   String accessToken;
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
-        accessToken: json["access_token"],
+        accessToken: json["access_token"] ?? 'access_token is null',
       );
 
   Map<String, dynamic> toJson() => {
