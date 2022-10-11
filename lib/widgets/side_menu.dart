@@ -79,7 +79,10 @@ class SideMenu extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Cerrar Sesión'),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushReplacementNamed(context, 'login');
+              AuthService.deleteToken();
+            },
           ),
         ],
       ),
