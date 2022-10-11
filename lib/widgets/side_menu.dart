@@ -76,14 +76,11 @@ class SideMenu extends StatelessWidget {
             },
           ),
 
-          /*ListTile(
-            leading: const Icon(Icons.settings_applications),
-            title: const Text('Settings'),
-            onTap: () {
-              Navigator.pushReplacementNamed(
-                  context, SettingsScreens.routerName);
-            },
-          ),*/
+           ListTile(
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Cerrar Sesión'),
+            onTap: () {},
+          ),
         ],
       ),
     );
