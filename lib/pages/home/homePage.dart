@@ -1,6 +1,8 @@
+import 'package:app_dynamics/services/authServies.dart';
 import 'package:app_dynamics/widgets/appbar.dart';
 import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override

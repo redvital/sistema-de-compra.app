@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(

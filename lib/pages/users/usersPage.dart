@@ -1,8 +1,11 @@
+import 'package:app_dynamics/models/usuario.dart';
+import 'package:app_dynamics/services/authServies.dart';
 import 'package:app_dynamics/ui/appTheme.dart';
 import 'package:app_dynamics/widgets/appbar.dart';
 
 import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UsersPage extends StatelessWidget {
   @override
@@ -28,7 +31,7 @@ class UsersPage extends StatelessWidget {
                 icon: Icon(Icons.add_sharp),
                 label: Text('Agregar'),
                 onPressed: () {
-                  Navigator.pushNamed(context, 'userScreen');
+                  // Navigator.pushNamed(context, 'userScreen');
                 },
               ),
 
@@ -36,10 +39,7 @@ class UsersPage extends StatelessWidget {
                 height: 20,
               ),
               CardUser(),
-              CardUser(),
-              CardUser(),
-              CardUser(),
-              CardUser(),
+
               //separacion entre cards
               SizedBox(height: 5),
             ]),
@@ -49,10 +49,6 @@ class UsersPage extends StatelessWidget {
 }
 
 class CardUser extends StatelessWidget {
-  const CardUser({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Card(

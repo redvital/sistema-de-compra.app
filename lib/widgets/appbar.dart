@@ -1,5 +1,7 @@
+import 'package:app_dynamics/services/authServies.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../ui/appTheme.dart';
 
@@ -8,6 +10,8 @@ class appBarReusable extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(60.0);
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final usuarios = authService.leerUsuario();
     return AppBar(
       backgroundColor: Color.fromARGB(255, 183, 58, 58),
       actions: [
@@ -15,7 +19,9 @@ class appBarReusable extends StatelessWidget implements PreferredSizeWidget {
           child: IconButton(
             icon: const Icon(Icons.notifications),
             color: Colors.white,
-            onPressed: () {},
+            onPressed: () {
+              print(usuarios);
+            },
           ),
         ),
         Container(
