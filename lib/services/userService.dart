@@ -21,14 +21,11 @@ class UserService extends ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + await AuthService.getToken(),
     });
-    final result = json.decode(resp.body);
+    /*final result = json.decode(resp.body);
     final iterable = result["data"];
-    UsuariosListResponse users = new UsuariosListResponse.fromJson(iterable);
+    UsuariosListResponse users = new UsuariosListResponse.fromJson(result);*/
 
-    print(users);
     this.isLoading = false;
     notifyListeners();
-
-    ///
   }
 }
