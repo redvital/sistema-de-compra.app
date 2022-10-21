@@ -10,8 +10,8 @@ class appBarReusable extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(60.0);
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context);
-    final usuarios = authService.leerUsuario();
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     return AppBar(
       backgroundColor: Color.fromARGB(255, 183, 58, 58),
       actions: [
@@ -20,7 +20,7 @@ class appBarReusable extends StatelessWidget implements PreferredSizeWidget {
             icon: const Icon(Icons.notifications),
             color: Colors.white,
             onPressed: () {
-              print(usuarios);
+              print(authService.readUser());
             },
           ),
         ),

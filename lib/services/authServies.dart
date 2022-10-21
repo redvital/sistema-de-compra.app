@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:app_dynamics/global/environment.dart';
 import 'package:app_dynamics/models/loginResponse.dart';
-import 'package:app_dynamics/models/usuario.dart';
+import 'package:app_dynamics/models/listUserResponse.dart';
+import 'package:app_dynamics/models/userLoginResponse.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -19,10 +20,10 @@ class AuthService with ChangeNotifier {
   }
 
 //Getter del token de forma statica
-  static Future<String?> getToken() async {
+  static Future<String> getToken() async {
     final _storage = new FlutterSecureStorage();
     final access_token = await _storage.read(key: 'access_token');
-    return access_token;
+    return access_token!;
   }
 
   set access_token(String? access_token) {
@@ -86,7 +87,7 @@ class AuthService with ChangeNotifier {
       await this._guardarToken(loginResponse.accessToken);
       //final body = jsonDecode(resp.body);
       final usuario = usuariosResponseFromJson(resp.body);
-
+      //print(resp.body);
       return true;
     } else {
       this.logout();
@@ -94,27 +95,18 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<String?> leerUsuario() async {
+  Future<UsuariosResponse> readUser() async {
     final access_token = await this._storage.read(key: 'access_token');
     final resp =
         await http.get(Uri.parse('${Environment.apiUrl}/me'), headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer  $access_token',
     });
+    print(resp.body);
+    final responseUser = usuariosResponseFromJson(resp.body);
+    return responseUser;
 
-    final loginResponse = loginResponseFromJson(resp.body);
-    final usuariosResponse = usuariosResponseFromJson(resp.body);
-
-    await this._guardarUsuario(
-        loginResponse.accessToken, usuariosResponse.name, usuariosResponse.rol);
-
-    // final usuario = usuariosFromJson(resp.body);
-  }
-
-  Future _guardarUsuario(String access_token, String name, String rol) async {
-    await _storage.write(key: 'access_token', value: access_token);
-    await _storage.write(key: 'rol', value: rol);
-    await _storage.write(key: 'name', value: name);
+    //final usuariosResponse = usuariosResponseFromJson(resp.body);
   }
 
   Future _guardarToken(String access_token) async {

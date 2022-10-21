@@ -1,6 +1,7 @@
 import 'package:app_dynamics/helpers/alert.dart';
+import 'package:app_dynamics/provider/user_form_provider.dart';
 import 'package:app_dynamics/services/authServies.dart';
-import 'package:app_dynamics/ui/appTheme.dart';
+
 import 'package:app_dynamics/widgets/btnRed.dart';
 import 'package:app_dynamics/widgets/customInputPage.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,18 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    //final usersService = Provider.of<UsersService>(context);
+    /*return ChangeNotifierProvider(
+      create: (_) => UserFormProvider(usersService.selectedUser),
+      child: _UserScreenBody(userService: usersService),
+    );*/
+    return Container();
+  }
+}
 
+class _UserScreenBody extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(

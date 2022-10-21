@@ -1,57 +1,89 @@
-import 'package:app_dynamics/models/usuario.dart';
-import 'package:app_dynamics/services/authServies.dart';
+import 'package:app_dynamics/models/listUserResponse.dart';
+import 'package:app_dynamics/services/services.dart';
 import 'package:app_dynamics/ui/appTheme.dart';
 import 'package:app_dynamics/widgets/appbar.dart';
-
+//import 'package:app_dynamics/widgets/cardUser.dart';
 import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class UsersPage extends StatelessWidget {
+class UsersPage extends StatefulWidget {
+  @override
+  State<UsersPage> createState() => _UsersPageState();
+}
+
+//final usuarioService = new UsersService();
+
+RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+class _UsersPageState extends State<UsersPage> {
+  final usuarios = [
+    Datum(
+      id: 1,
+      rol: "coordinador",
+      name: "kervis vasquez",
+      email: "kervisvasquez24@gmail.com",
+      createdAt: null,
+      isPresidente: false,
+      updatedAt: null,
+      deletedAt: null,
+      deviceKey: null,
+      emailVerifiedAt: null,
+    ),
+    Datum(
+      id: 2,
+      rol: "coordinador",
+      name: "kervis vasquez",
+      email: "kervisvasquez24@gmail.com",
+      createdAt: null,
+      isPresidente: false,
+      updatedAt: null,
+      deletedAt: null,
+      deviceKey: null,
+      emailVerifiedAt: null,
+    )
+  ];
+
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final userListService = Provider.of<UserService>(context);
     return Scaffold(
       appBar: appBarReusable(),
       drawer: SideMenu(),
-      body: SingleChildScrollView(
-        child: Column(
-            //esto crea el pagging
-            //padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            children: [
-              Text(
-                'Usuarios',
-                style: TextStyle(height: 2, fontSize: 40),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              FloatingActionButton.extended(
-                backgroundColor: Color.fromARGB(255, 183, 58, 58),
-                icon: Icon(Icons.add_sharp),
-                label: Text('Agregar'),
-                onPressed: () {
-                  // Navigator.pushNamed(context, 'userScreen');
-                },
-              ),
-
-              SizedBox(
-                height: 20,
-              ),
-              CardUser(),
-
-              //separacion entre cards
-              SizedBox(height: 5),
-            ]),
+      body: SmartRefresher(
+        controller: _refreshController,
+        //onRefresh: _cargarUsuarios,
+        enablePullDown: true,
+        child: _listviewUser(),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Color.fromARGB(255, 183, 58, 58),
+        icon: Icon(Icons.add_sharp),
+        label: Text('Agregar'),
+        onPressed: () {
+          // Navigator.pushNamed(context, 'userScreen');
+        },
       ),
     );
   }
-}
 
-class CardUser extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
+  ListView _listviewUser() {
+    return ListView.builder(
+        itemCount: usuarios.length,
+        itemBuilder: (BuildContext context, index) =>
+            _userGestureDetector(usuarios[index], context));
+  }
+
+  GestureDetector _userGestureDetector(Datum usuario, BuildContext context) {
+    return GestureDetector(
+        /* onTap: () {
+                userListService.selectedUser =
+                    userListService.userList[index].copy();
+                Navigator.pushNamed(context, 'userEditScreen');
+              },*/
+        child: Card(
       elevation: 5, // Change this
       shadowColor: Colors.black54,
       shape: RoundedRectangleBorder(
@@ -60,8 +92,8 @@ class CardUser extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         ListTile(
           leading: Icon(Icons.person, color: AppTheme.primary),
-          title: Text('Comprador'),
-          subtitle: Text('Coordinador'),
+          title: Text(usuario.name),
+          subtitle: Text(usuario.rol),
         ),
 
         Row(
@@ -69,7 +101,7 @@ class CardUser extends StatelessWidget {
           children: <Widget>[
             SizedBox(width: 30),
             const Icon(Icons.email, color: AppTheme.primary),
-            const Text("correo@correo.com"),
+            Text(usuario.email),
           ],
         ),
         Row(
@@ -100,6 +132,6 @@ class CardUser extends StatelessWidget {
           ),
         )
       ]),
-    );
+    ));
   }
 }
