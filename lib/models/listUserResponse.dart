@@ -80,4 +80,15 @@ class Datum {
         "created_at": createdAt!.toIso8601String(),
         "updated_at": updatedAt == null ? null : updatedAt?.toIso8601String(),
       };
+  Datum copy() => Datum(
+      id: this.id,
+      rol: this.rol,
+      name: this.name,
+      email: this.email,
+      emailVerifiedAt: this.emailVerifiedAt,
+      deletedAt: this.deletedAt,
+      deviceKey: this.deviceKey,
+      isPresidente: this.isPresidente,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt);
 }

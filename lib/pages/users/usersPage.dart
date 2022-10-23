@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:app_dynamics/global/environment.dart';
 import 'package:app_dynamics/models/listUserResponse.dart';
 import 'package:app_dynamics/services/services.dart';
 import 'package:app_dynamics/ui/appTheme.dart';
@@ -6,57 +8,78 @@ import 'package:app_dynamics/widgets/appbar.dart';
 import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'package:http/http.dart' as http;
 
 class UsersPage extends StatefulWidget {
   @override
   State<UsersPage> createState() => _UsersPageState();
 }
 
-//final usuarioService = new UsersService();
-
-RefreshController _refreshController = RefreshController(initialRefresh: false);
-
 class _UsersPageState extends State<UsersPage> {
-  final usuarios = [
-    Datum(
-      id: 1,
-      rol: "coordinador",
-      name: "kervis vasquez",
-      email: "kervisvasquez24@gmail.com",
-      createdAt: null,
-      isPresidente: false,
-      updatedAt: null,
-      deletedAt: null,
-      deviceKey: null,
-      emailVerifiedAt: null,
-    ),
-    Datum(
-      id: 2,
-      rol: "coordinador",
-      name: "kervis vasquez",
-      email: "kervisvasquez24@gmail.com",
-      createdAt: null,
-      isPresidente: false,
-      updatedAt: null,
-      deletedAt: null,
-      deviceKey: null,
-      emailVerifiedAt: null,
-    )
-  ];
+  final List<Datum> users = [];
+  bool isLoading = true;
+
+  late Future<List<Datum>> _listadoUsers;
+  Future<List<Datum>> _loadUser() async {
+    this.isLoading = true;
+
+    final resp =
+        await http.get(Uri.parse('${Environment.apiUrl}/user'), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + await AuthService.getToken(),
+    });
+    final result = json.decode(resp.body);
+    List<dynamic> datas = result["data"];
+
+    String body = utf8.decode(resp.bodyBytes);
+    final jsonData = jsonDecode(body);
+    for (var item in jsonData["data"]) {
+      users.add(Datum(
+          id: item["id"],
+          rol: item["rol"],
+          name: item["name"],
+          email: item["email"],
+          emailVerifiedAt: ["emailVerifiedAt"],
+          deletedAt: item["deletedAt"],
+          deviceKey: item["deviceKey"],
+          isPresidente: item["isPresidente"],
+          createdAt: item["createdAt"],
+          updatedAt: item["updatedAt"]));
+    }
+
+    return users;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _listadoUsers = _loadUser();
+  }
 
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
-    final userListService = Provider.of<UserService>(context);
+
     return Scaffold(
       appBar: appBarReusable(),
       drawer: SideMenu(),
-      body: SmartRefresher(
-        controller: _refreshController,
-        //onRefresh: _cargarUsuarios,
-        enablePullDown: true,
-        child: _listviewUser(),
+      body: FutureBuilder(
+        future: _listadoUsers,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            print(snapshot.data);
+            return ListView(
+              children: _lisUsers(snapshot.data as List<Datum>),
+            );
+          } else if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("Error");
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color.fromARGB(255, 183, 58, 58),
@@ -68,22 +91,12 @@ class _UsersPageState extends State<UsersPage> {
       ),
     );
   }
+}
 
-  ListView _listviewUser() {
-    return ListView.builder(
-        itemCount: usuarios.length,
-        itemBuilder: (BuildContext context, index) =>
-            _userGestureDetector(usuarios[index], context));
-  }
-
-  GestureDetector _userGestureDetector(Datum usuario, BuildContext context) {
-    return GestureDetector(
-        /* onTap: () {
-                userListService.selectedUser =
-                    userListService.userList[index].copy();
-                Navigator.pushNamed(context, 'userEditScreen');
-              },*/
-        child: Card(
+List<Widget> _lisUsers(List<Datum> data) {
+  List<Widget> users = [];
+  for (var user in data) {
+    users.add(Card(
       elevation: 5, // Change this
       shadowColor: Colors.black54,
       shape: RoundedRectangleBorder(
@@ -92,8 +105,8 @@ class _UsersPageState extends State<UsersPage> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         ListTile(
           leading: Icon(Icons.person, color: AppTheme.primary),
-          title: Text(usuario.name),
-          subtitle: Text(usuario.rol),
+          title: Text(user.name),
+          subtitle: Text(user.rol),
         ),
 
         Row(
@@ -101,17 +114,17 @@ class _UsersPageState extends State<UsersPage> {
           children: <Widget>[
             SizedBox(width: 30),
             const Icon(Icons.email, color: AppTheme.primary),
-            Text(usuario.email),
+            Text(user.email),
           ],
         ),
-        Row(
+        /*Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(width: 30),
             const Icon(Icons.calendar_today, color: AppTheme.primary),
-            const Text("Creado el 15 de febrero de 2001"),
+            Text(user.createdAt),
           ],
-        ),
+        ),*/
         //parte de botones
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
@@ -124,7 +137,7 @@ class _UsersPageState extends State<UsersPage> {
                   icon: const Icon(Icons.edit),
                   color: Colors.white,
                   onPressed: () {
-                    Navigator.pushNamed(context, 'userEditScreen');
+                    //Navigator.pushNamed(context, 'userEditScreen');
                   },
                 ),
               ),
@@ -134,4 +147,5 @@ class _UsersPageState extends State<UsersPage> {
       ]),
     ));
   }
+  return users;
 }
