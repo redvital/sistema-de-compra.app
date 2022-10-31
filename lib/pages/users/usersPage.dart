@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:app_dynamics/global/environment.dart';
 import 'package:app_dynamics/models/listUserResponse.dart';
+import 'package:app_dynamics/models/userDataResponse.dart';
+import 'package:app_dynamics/provider/usersProviders.dart';
 import 'package:app_dynamics/services/services.dart';
 import 'package:app_dynamics/ui/appTheme.dart';
 import 'package:app_dynamics/widgets/appbar.dart';
@@ -17,46 +19,6 @@ class UsersPage extends StatefulWidget {
 }
 
 class _UsersPageState extends State<UsersPage> {
-  final List<Datum> users = [];
-  bool isLoading = true;
-
-  late Future<List<Datum>> _listadoUsers;
-  Future<List<Datum>> _loadUser() async {
-    this.isLoading = true;
-
-    final resp =
-        await http.get(Uri.parse('${Environment.apiUrl}/user'), headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + await AuthService.getToken(),
-    });
-    final result = json.decode(resp.body);
-    List<dynamic> datas = result["data"];
-
-    String body = utf8.decode(resp.bodyBytes);
-    final jsonData = jsonDecode(body);
-    for (var item in jsonData["data"]) {
-      users.add(Datum(
-          id: item["id"],
-          rol: item["rol"],
-          name: item["name"],
-          email: item["email"],
-          emailVerifiedAt: ["emailVerifiedAt"],
-          deletedAt: item["deletedAt"],
-          deviceKey: item["deviceKey"],
-          isPresidente: item["isPresidente"],
-          createdAt: item["createdAt"],
-          updatedAt: item["updatedAt"]));
-    }
-
-    return users;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _listadoUsers = _loadUser();
-  }
-
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
@@ -64,23 +26,7 @@ class _UsersPageState extends State<UsersPage> {
     return Scaffold(
       appBar: appBarReusable(),
       drawer: SideMenu(),
-      body: FutureBuilder(
-        future: _listadoUsers,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            print(snapshot.data);
-            return ListView(
-              children: _lisUsers(snapshot.data as List<Datum>),
-            );
-          } else if (snapshot.hasError) {
-            print(snapshot.error);
-            return Text("Error");
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+      body: _listUsers(),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color.fromARGB(255, 183, 58, 58),
         icon: Icon(Icons.add_sharp),
@@ -91,61 +37,74 @@ class _UsersPageState extends State<UsersPage> {
       ),
     );
   }
-}
 
-List<Widget> _lisUsers(List<Datum> data) {
-  List<Widget> users = [];
-  for (var user in data) {
-    users.add(Card(
-      elevation: 5, // Change this
-      shadowColor: Colors.black54,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        ListTile(
-          leading: Icon(Icons.person, color: AppTheme.primary),
-          title: Text(user.name),
-          subtitle: Text(user.rol),
-        ),
+  Widget _listUsers() {
+    final userProvider = Provider.of<UserDataProvider>(context);
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(width: 30),
-            const Icon(Icons.email, color: AppTheme.primary),
-            Text(user.email),
-          ],
+    return FutureBuilder(
+        future: userProvider.getAll(),
+        builder: (_, AsyncSnapshot<List<UserData>> snapshot) {
+          if (snapshot.hasData) {
+            final userData = snapshot.data;
+            return ListView.builder(
+                itemCount: userData?.length,
+                itemBuilder: (BuildContext context, int i) => GestureDetector(
+                      onTap: () {
+                        userProvider.selectedUser = userData![i].copy();
+                        Navigator.pushNamed(context, 'userEditScreen');
+                        print(userData[i].id);
+                      },
+                      child: _card(userData![i]),
+                    ));
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
+  }
+
+  Widget _card(UserData userData) => Card(
+        elevation: 5, // Change this
+        shadowColor: Colors.black54,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-        /*Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(width: 30),
-            const Icon(Icons.calendar_today, color: AppTheme.primary),
-            Text(user.createdAt),
-          ],
-        ),*/
-        //parte de botones
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              CircleAvatar(
-                backgroundColor: Color.fromARGB(255, 68, 183, 72),
-                child: IconButton(
-                  icon: const Icon(Icons.edit),
-                  color: Colors.white,
-                  onPressed: () {
-                    //Navigator.pushNamed(context, 'userEditScreen');
-                  },
-                ),
-              ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          ListTile(
+            leading: Icon(Icons.person, color: AppTheme.primary),
+            title: Text(userData.name),
+            subtitle: Text(userData.rol),
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(width: 30),
+              const Icon(Icons.email, color: AppTheme.primary),
+              Text(userData.email),
             ],
           ),
-        )
-      ]),
-    ));
-  }
-  return users;
+
+          //parte de botones
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CircleAvatar(
+                  backgroundColor: Color.fromARGB(255, 68, 183, 72),
+                  child: IconButton(
+                    icon: const Icon(Icons.edit),
+                    color: Colors.white,
+                    onPressed: () {
+                      //Navigator.pushNamed(context, 'userEditScreen');
+                    },
+                  ),
+                ),
+              ],
+            ),
+          )
+        ]),
+      );
 }

@@ -1,10 +1,16 @@
-import 'package:app_dynamics/ui/appTheme.dart';
 import 'package:app_dynamics/widgets/customInputPage.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserEditScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return _userScreenBody();
+  }
+}
+
+class _userScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

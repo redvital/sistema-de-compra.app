@@ -1,53 +1,30 @@
 import 'dart:convert';
 
 import 'package:app_dynamics/models/listUserResponse.dart';
+import 'package:app_dynamics/models/userDataResponse.dart';
 import 'package:app_dynamics/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../global/environment.dart';
 
-class UserService extends ChangeNotifier {
-  final List<Datum> users = [];
-  bool isLoading = true;
-  late Datum selectedUser;
-  late Future<List<Datum>> _listadoUsers;
-  Future<List<Datum>> loadUser() async {
-    this.isLoading = true;
-    notifyListeners();
-    final resp =
+class UserService {
+  final List<UserData> users = [];
+  late UserData selectedUser;
+  Future<List<UserData>> getUsers() async {
+    final response =
         await http.get(Uri.parse('${Environment.apiUrl}/user'), headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + await AuthService.getToken(),
     });
-    final result = json.decode(resp.body);
-    /*final iterable = result["data"];
-    UsuariosListResponse users = new UsuariosListResponse.fromJson(result);*/
-    List<dynamic> datas = result["data"];
-    //final Map<String, dynamic> usermap = json.decode(datas);
-//    funciona retornando los maps
-    /*   datas.forEach((datas) {
-      print(datas);
-    });*/
+    if (response.statusCode == 200) {
+      final decoded = await json.decode(response.body);
 
-    String body = utf8.decode(resp.bodyBytes);
-    final jsonData = jsonDecode(body);
-    for (var item in jsonData["data"]) {
-      users.add(Datum(
-          id: item["id"],
-          rol: item["rol"],
-          name: item["name"],
-          email: item["email"],
-          emailVerifiedAt: ["emailVerifiedAt"],
-          deletedAt: item["deletedAt"],
-          deviceKey: item["deviceKey"],
-          isPresidente: item["isPresidente"],
-          createdAt: item["createdAt"],
-          updatedAt: item["updatedAt"]));
+      for (var user in decoded['data']) {
+        var us = new UserData.fromJson(user);
+        users.add(us);
+      }
+      return users;
     }
-
-    return users;
-
-    this.isLoading = false;
-    notifyListeners();
+    return [];
   }
 }

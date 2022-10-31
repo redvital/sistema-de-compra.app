@@ -1,3 +1,4 @@
+import 'package:app_dynamics/provider/usersProviders.dart';
 import 'package:app_dynamics/services/services.dart';
 import 'package:provider/provider.dart';
 import 'package:app_dynamics/routes/routes.dart';
@@ -14,7 +15,7 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
         ChangeNotifierProvider(
-          create: (_) => UserService(),
+          create: (_) => UserDataProvider(),
           lazy: true,
         ),
       ],
