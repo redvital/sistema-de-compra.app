@@ -87,7 +87,7 @@ class AuthService with ChangeNotifier {
       await this._guardarToken(loginResponse.accessToken);
       //final body = jsonDecode(resp.body);
       final usuario = usuariosResponseFromJson(resp.body);
-      //print(resp.body);
+
       return true;
     } else {
       this.logout();
@@ -102,7 +102,7 @@ class AuthService with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer  $access_token',
     });
-    print(resp.body);
+
     final responseUser = usuariosResponseFromJson(resp.body);
     return responseUser;
 

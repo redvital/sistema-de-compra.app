@@ -1,10 +1,13 @@
+import 'package:app_dynamics/services/taskService.dart';
 import 'package:app_dynamics/widgets/appbar.dart';
 import 'package:app_dynamics/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final taskService = Provider.of<TaskService>(context);
     return Scaffold(
       appBar: appBarReusable(),
       drawer: SideMenu(),

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
+import 'package:app_dynamics/global/environment.dart';
+import 'package:app_dynamics/models/meUserResponse.dart';
+
 import 'package:app_dynamics/services/authServies.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../ui/appTheme.dart';
 
 class appBarReusable extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -20,7 +23,7 @@ class appBarReusable extends StatelessWidget implements PreferredSizeWidget {
             icon: const Icon(Icons.notifications),
             color: Colors.white,
             onPressed: () {
-              print(authService.readUser());
+              print('_getMe()');
             },
           ),
         ),
